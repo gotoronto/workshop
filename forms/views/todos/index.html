@@ -1,0 +1,17 @@
+<h1>Todos</h1>
+<ul>
+  {{range $index, $task := .Todos}}
+    <li>
+      <a href="/{{$index}}">
+      {{if $task.Done}}
+        <s>{{$task.Task}}</s>
+      {{else}}
+        {{$task.Task}}
+      {{end}}
+      </a>
+      |
+      <a href="/{{$index}}/edit">edit</a>
+    </li>
+  {{end}}
+</ul>
+<a href="/new">Add Task</a>

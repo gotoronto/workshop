@@ -1,0 +1,175 @@
+Get started with Go
+
+Go Toronto
+
+* Getting Setup (Ask for help if you are stuck)
+
+Install Git:
+
+- For Windows Download and install from: git-scm.com/download/win
+- For Ubuntu run `sudo apt-get install git-all`
+- For OSX run `brew install git`
+
+Install Go
+
+- Download Go from: golang.org/doc/install
+- Follow environment setup instructions
+- Get the code: `go get github.com/gotoronto/workshop`
+- change directory to `$GOPATH/src/github.com/gotoronto/workshop`
+- run `go run hello/main.go`
+
+* Variables
+
+Declaration and Initialization
+
+  var myVar string // Defining a variable
+  myVar = "Hello" // initializing a variable
+
+Within a go function you can use a shortcut to define and initialize a variable
+and go will infer its type. These are the same:
+
+  myVar := "Hello"
+  var myVar string = "Hello"
+
+We can define all types of variables this way.
+
+  myString := "Hello"
+  myInteger := 123
+  myFloat := 123.456
+  mySlice := []int{1, 2, 3}
+
+* Functions
+
+There are a couple different forms of functions
+
+  func myFunc1() { /*no params, no returns*/ }
+  func myFunc2(a int, b string) { /*with params, no returns*/ }
+  func myFunc3(a string) bool { //with params, and a single return
+    return a == "yes"
+  }
+  func myFunc4(a string) (bool, error) { //with params, and multiple return
+    return a == "test", fmt.Errorf("This is an error")
+  }
+  func myFunc5(a string) (isYes bool, err error) { //with params, and multiple named return
+    isYes = a == "test"
+    err = fmt.Errorf("This is an error")
+    return
+  }
+
+They can simply be called like this
+
+  myFunc1()
+  myFunc2(2, "my string")
+  isYes := myFunc3("no")
+  isYes, err := myFunc3("no")
+
+* Try making `functions/main.go` dig down to 20 metres.
+
+.code functions/main.go
+
+* Control Flow
+
+Control flow in go is very much like Javascript but without the brackets!
+A simple if/else if/else looks like this:
+
+  if answer == 42 {
+    return "You have found meaning"
+  } else if answer == 41 {
+    return "You are almost there"
+  } else {
+    return "Keep looking"
+  }
+
+Checking errors in Go is common and you can shorten your work with this:
+
+  if err := foo(); err != nil {
+    panic(err)
+  }
+
+Comparison is similar to Javascript as well using the same operators *==*, *&&*,
+*||*, *>=*, *<=*, *<*, *>*
+
+* Loops
+
+Once again go is much like Javascript but without the brackets. A for loop might
+look like this
+
+  for i := 0; i < 10; i++ {}
+
+Go does not have a while loop, you can use `for` for that!
+
+  for i < 10 {...}
+
+And when you start using arrays/slices you can iterate over them easily as well!
+
+  for i, person := range people {...}
+
+* Structs
+
+Go is not Object oriented however you can arrange data into things you might call
+"Objects". (Please don't tell people I said you could)
+
+You can create a struct using a type declaration
+
+  type Person struct {
+    Name string
+    Age  int
+  }
+
+Then you can initialize that struct
+
+  p := Person{
+    Name: "Greg",
+    Age:  25,
+  }
+
+And access it's attributes
+
+  fmt.Println(p.Name) // prints Greg
+
+* Methods
+
+Methods are just functions that are called on structs.
+
+.code methods/main.go
+
+* Go Routines & Channels
+
+Were are the Go Routines? you may ask.
+
+You won't need them for now, you can learn more about them at [[https://tour.golang.org/concurrency/1]]
+
+* Let's Get on the Web
+
+There is a lot of functionality in to Go standard library. You can run the code in
+`web/main.go` by running `go run web/main.go` then open your browser to http://127.0.0.1:8080
+
+.code web/main.go
+
+* Chi, for a better time.
+
+Chi makes your life easier. Run `go run routes/main.go` and visit [[http://127.0.0.1:8080/Jane]] in
+your browser.
+
+- Look at the import path for chi. See if you can figure out where the library is.
+- Try and add another route with a variable
+- A great way to find more information on a library is by visiting it's import path in your browser
+
+* Templates
+
+Run `go run templates/main.go` and visit [[http://127.0.0.1:8080/Jane]] in
+your browser.
+
+- Try and add a condition to check if the task exist and if it doesnt then render "404 Task not found"
+
+* Forms
+
+Run `go run forms/main.go` and visit [[http://127.0.0.1:8080/Jane]] in
+your browser.
+
+
+* Follow up topics
+
+- For a more indepth tour of everything please checkout out https://tour.golang.org
+- Setup your editor to auto-fmt your code
+- Dependancy Management [[https://github.com/golang/dep]], [[https://github.com/Masterminds/glide]]

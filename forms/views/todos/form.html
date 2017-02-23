@@ -1,0 +1,14 @@
+{{if .Error}}
+<h1>{{.Error}}</h1>
+{{end}}
+<h1>Contact</h1>
+{{with .Task}}
+  <form method="POST">
+    <label>Task:</label><br />
+    <input type="text" name="email" value="{{.Task}}"><br />
+    <label>Done:</label><br />
+    <input type="hidden" name="done" value="false"/>
+    <input type="checkbox" name="done" value="true" {{if .Done}}checked{{end}}><br />
+    <input type="submit">
+  </form>
+{{end}}
