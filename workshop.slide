@@ -133,6 +133,10 @@ Methods are just functions that are called on structs.
 
 .code methods/main.go
 
+* Public Vs Private
+
+// TODO
+
 * Go Routines & Channels
 
 Were are the Go Routines? you may ask.
@@ -164,12 +168,18 @@ your browser.
 
 * Forms
 
-Run `go run forms/main.go` and visit [[http://127.0.0.1:8080/Jane]] in
+Run `go run main.go` in the forms directory and visit [[http://127.0.0.1:8080/Jane]] in
 your browser.
 
+- Try adding a `Label field to the Todo model` and allow it to be updated through the forms.
+
+* JSON REST
 
 * Follow up topics
 
 - For a more indepth tour of everything please checkout out https://tour.golang.org
 - Setup your editor to auto-fmt your code
+- Reloading Go code when files are changed github.com/codegangsta/gin
 - Dependancy Management [[https://github.com/golang/dep]], [[https://github.com/Masterminds/glide]]
+- Deployment // TODO links
+- Auth github.com/pressly/chi has some good jwt auth examples

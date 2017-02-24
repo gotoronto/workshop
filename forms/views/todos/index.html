@@ -2,7 +2,7 @@
 <ul>
   {{range $index, $task := .Todos}}
     <li>
-      <a href="/{{$index}}">
+      <a href="/todos/{{$index}}">
       {{if $task.Done}}
         <s>{{$task.Task}}</s>
       {{else}}
@@ -10,8 +10,10 @@
       {{end}}
       </a>
       |
-      <a href="/{{$index}}/edit">edit</a>
+      <a href="/todos/{{$index}}/edit">edit</a>
+
+      <form method="POST" action="/todos/{{$index}}/delete"><input type="submit" value="Delete"></form>
     </li>
   {{end}}
 </ul>
-<a href="/new">Add Task</a>
+<a href="/todos/new">Add Task</a>
