@@ -135,7 +135,22 @@ Methods are just functions that are called on structs.
 
 * Public Vs Private
 
-// TODO
+- Privacy is based on packge level.
+- Public properties are first letter *uppercase* and private properties are first letter *lowercase*
+
+  package my_package // Anyone who imports my_package will only have public access
+
+  var PublicConstVar = "Hello"
+  var privateConstVar = "World"
+
+  type Person struct { // public
+    Name string // Public
+    job  string // private
+  }
+
+  func PublicMethod() {}
+  func privateMethod() {}
+
 
 * Go Routines & Channels
 
@@ -161,23 +176,29 @@ your browser.
 
 * Templates
 
-Run `go run templates/main.go` and visit [[http://127.0.0.1:8080/Jane]] in
+Run `go run main.go` from the templates directory and visit [[http://127.0.0.1:8080/Jane]] in
 your browser.
 
 - Try and add a condition to check if the task exist and if it doesnt then render "404 Task not found"
 
 * Forms
 
-Run `go run main.go` in the forms directory and visit [[http://127.0.0.1:8080/Jane]] in
+Run `go run main.go` in the forms directory and visit [[http://127.0.0.1:8080]] in
 your browser.
 
-- Try adding a `Label field to the Todo model` and allow it to be updated through the forms.
+- Try adding a `Label` field to the Todo model and allow it to be updated through the forms.
 
 * JSON REST
+
+Run `go run main.go` in the rest directory and visit [[http://127.0.0.1:8080]] in
+your browser.
+
+- Try adding a `Label` field to the Todo model and allow it to be updated through the forms.
 
 * Follow up topics
 
 - For a more indepth tour of everything please checkout out https://tour.golang.org
+- Database integration
 - Setup your editor to auto-fmt your code
 - Reloading Go code when files are changed github.com/codegangsta/gin
 - Dependancy Management [[https://github.com/golang/dep]], [[https://github.com/Masterminds/glide]]
