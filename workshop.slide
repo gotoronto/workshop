@@ -16,7 +16,6 @@ Install Go
 - Follow environment setup instructions
 - Get the code: `go get github.com/gotoronto/workshop`
 - change directory to `$GOPATH/src/github.com/gotoronto/workshop`
-- run `go run hello/main.go`
 
 * Variables
 
@@ -63,13 +62,44 @@ They can simply be called like this
   isYes := myFunc3("no")
   isYes, err := myFunc3("no")
 
-* Try making `functions/main.go` dig down to 20 metres.
+* Special Function
 
-.code functions/main.go
+The main entry point into your program is the main function in the main package.
+
+  package main
+
+  func main() {
+    // Do your stuff...
+  }
+
+* Packages
+
+- Every folder of your project is a package.
+- Every go source file requires a `package` declaration at the top.
+- packages should align with their folders so a file inside a folder called events would have `package events` at the top
+- This would mean it could be imported as `events`
+- A common package is 'fmt' used for outputting messages like this:
+
+  package main
+
+  import "fmt"
+
+  func main() {
+    'fmt.Println("Hi")'
+  }
+
+* Task 1
+
+- Create a file in this project directory called `main.go`
+- Declare the main package
+- Create a function that takes a string name argument and returns a formatted string that says hello to that name. e.g "Hello Jessica"
+- Assign the output of your function to a variable
+- Print out the variable.
+- run your program by using the command `go run main.go`
 
 * Control Flow
 
-Control flow in go is very much like Javascript but without the brackets!
+Control flow in go is very much like Javascript but without the () brackets!
 A simple if/else if/else looks like this:
 
   if answer == 42 {
@@ -86,8 +116,7 @@ Checking errors in Go is common and you can shorten your work with this:
     panic(err)
   }
 
-Comparison is similar to Javascript as well using the same operators *==*, *&&*,
-*||*, *>=*, *<=*, *<*, *>*
+Comparison is similar to Javascript as well using the same operators *!=*, *==*, *&&*, *||*, *>=*, *<=*, *<*, *>*
 
 * Loops
 
@@ -96,13 +125,66 @@ look like this
 
   for i := 0; i < 10; i++ {}
 
-Go does not have a while loop, you can use `for` for that!
+Go does not have a while loop, you can use a `for` loop for that!
 
   for i < 10 {...}
 
-And when you start using arrays/slices you can iterate over them easily as well!
+And you can iterate over slices easily as well!
 
-  for i, person := range people {...}
+  numbers := []string{"one", "two", "three"}
+  for index, text := range numbers {...}
+
+* Task 2
+
+Write a program that prints all the numbers between 1 and 100, that are evenly
+divisible by 3 (3, 6, 9)
+
+* Slices (Arrays)
+
+Unlike arrays, slices are typed only by the elements they contain (not the number of elements). To create an empty slice with non-zero length, use the builtin make. Here we make a slice of strings of length 3 (initially zero-valued).
+
+  var s []string
+  s = make([]string, 3)
+  l := []string{} // Same as make([]string, 0)
+
+We can set and get just like with arrays.
+
+  s[0] = "a"
+  s[1] = "b"
+
+len returns the length of the slice as expected.
+
+  len(s) // returns 3
+
+* Slices Cont.
+
+We can add to a slice by using Go's built in function `append`
+
+  s = append(s, "d", "e")
+  len(s) // return 4
+
+*Gotchya* Watch out! This append allocates a new slice because it appended beyond
+it's original size.
+
+You can access Ranges of slices with the `:`
+
+  s := []string{"a", "b", "c", "d", "e", "f"}
+  s[2:5] // [c d e]
+  // from start to 5
+  s[:5] // [a b c d e]
+  // from 2 to end
+  s[2:] // [c d e f]
+
+For good tips check out [[https://github.com/golang/go/wiki/SliceTricks]]
+
+* Task 3
+
+- Change into the  `slices` directory
+- Implement the `Pic` function.
+- It should return a slice of length dy, each element of which is a slice of dx integers. (You need to use a loop to allocate each []int inside the [][]int.)
+- When you run the program, it will display your picture, interpreting the integers as colors.
+
+.image assets/examples.png
 
 * Structs
 
@@ -131,11 +213,28 @@ And access it's attributes
 
 Methods are just functions that are called on structs.
 
-.code methods/main.go
+  type Person struct {
+    Name string
+  }
+
+  // A pointer receiver means you can change this person.
+  func (p *Person) SetName(newName string) {
+    p.Name = newName
+  }
+
+  // No pointer means you cannot change this person.
+  func (p Person) SayName() {
+    fmt.Println(p.Name)
+  }
+
+  func main() {
+    person := &Person{Name: "Jane"}
+    person.SayName()
+  }
 
 * Public Vs Private
 
-- Privacy is based on packge level.
+- Privacy is based on package level.
 - Public properties are first letter *uppercase* and private properties are first letter *lowercase*
 
   package my_package // Anyone who imports my_package will only have public access
@@ -151,56 +250,68 @@ Methods are just functions that are called on structs.
   func PublicMethod() {}
   func privateMethod() {}
 
+* JSON
+
+Json is super simple in Go. You can add tags to your structs to tell go how to
+unmarshal json into your structs.
+
+  type Car struct{
+    Make  string    `json:"make"`
+    Model int       `json:"model"`
+    Color []float32 `json:"color"`
+    id    int
+  }
+
+Then you can unmarshal this data into the car struct like this
+
+  car := Car{}
+  err = json.Unmarshal(jsonData, &car)
+
+**Gotchya** You can only unmarshal public attributes. If for some reason your
+data is not making it into your struct, make sure the attributes are public.
+
+* Task 4
+
+- change into the json directory.
+- In main.go create a struct to unmarshal the data from `people.json`
+- Add up the ages of the people.
+- Output the total.
+
+* JSON REST Task 5 Pt. 1
+
+Let's get on the Web! The web directory has a skeleton of a CRUD API setup. Let's
+see if we can implement the actions!
+
+- Change into the `web` directory.
+- run main.go and open your browser to [[http://127.0.0.1:8080]]
+- You can't add new tasks. Look at the create action. It is half finished.
+- Add a new ID to the new task. *Don't get fancy*
+- Add the todo to the *todos* slice
+- Restart the server and try to add a new task!
+
+* JSON REST Task 5 Pt. 2
+
+You have implemented create. Why don't we get update working!
+
+- Check the *show* action on how to get the requested Todo
+- Use your code from create to get the posted data
+- Validate your data!
+- Update the task
+- Render the updated Todo
 
 * Go Routines & Channels
 
 Were are the Go Routines? you may ask.
 
-You won't need them for now, you can learn more about them at [[https://tour.golang.org/concurrency/1]]
-
-* Let's Get on the Web
-
-There is a lot of functionality in to Go standard library. You can run the code in
-`web/main.go` by running `go run web/main.go` then open your browser to http://127.0.0.1:8080
-
-.code web/main.go
-
-* Chi, for a better time.
-
-Chi makes your life easier. Run `go run routes/main.go` and visit [[http://127.0.0.1:8080/Jane]] in
-your browser.
-
-- Look at the import path for chi. See if you can figure out where the library is.
-- Try and add another route with a variable
-- A great way to find more information on a library is by visiting it's import path in your browser
-
-* Templates
-
-Run `go run main.go` from the templates directory and visit [[http://127.0.0.1:8080/Jane]] in
-your browser.
-
-- Try and add a condition to check if the task exist and if it doesnt then render "404 Task not found"
-
-* Forms
-
-Run `go run main.go` in the forms directory and visit [[http://127.0.0.1:8080]] in
-your browser.
-
-- Try adding a `Label` field to the Todo model and allow it to be updated through the forms.
-
-* JSON REST
-
-Run `go run main.go` in the rest directory and visit [[http://127.0.0.1:8080]] in
-your browser.
-
-- Try adding a `Label` field to the Todo model and allow it to be updated through the forms.
+It is true that they are one of the most powerful features of Go but in basic
+web development you will rarely need them. To learn more about them visit  [[https://tour.golang.org/concurrency]]
 
 * Follow up topics
 
 - For a more indepth tour of everything please checkout out https://tour.golang.org
-- Database integration
-- Setup your editor to auto-fmt your code
-- Reloading Go code when files are changed github.com/codegangsta/gin
+- Database integration [[https://dinosaurscode.xyz/go/2016/06/19/golang-mysql-authentication]]
+- Setup your editor to auto-fmt your code [[https://atom.io/packages/go-plus]]
 - Dependancy Management [[https://github.com/golang/dep]], [[https://github.com/Masterminds/glide]]
-- Deployment // TODO links
-- Auth github.com/pressly/chi has some good jwt auth examples
+- Deployment [[https://semaphoreci.com/community/tutorials/how-to-deploy-a-go-web-application-with-docker]]
+- Auth [[github.com/pressly/chi]] has some good jwt auth examples
+- Reloading Go code when files are changed [[github.com/codegangsta/gin]]
