@@ -37,6 +37,8 @@ We can define all types of variables this way.
   myFloat := 123.456
   mySlice := []int{1, 2, 3}
 
+// TODO data types?
+
 * Functions
 
 There are a couple different forms of functions
@@ -56,6 +58,7 @@ There are a couple different forms of functions
   }
 
 They can simply be called like this
+// TODO Put output
 
   myFunc1()
   myFunc2(2, "my string")
@@ -85,7 +88,7 @@ The main entry point into your program is the main function in the main package.
   import "fmt"
 
   func main() {
-    'fmt.Println("Hi")'
+    fmt.Println("Hi")
   }
 
 * Task 1
@@ -127,7 +130,9 @@ look like this
 
 Go does not have a while loop, you can use a `for` loop for that!
 
-  for i < 10 {...}
+  for i < 10 {
+    i++
+  }
 
 And you can iterate over slices easily as well!
 
@@ -145,7 +150,6 @@ Unlike arrays, slices are typed only by the elements they contain (not the numbe
 
   var s []string
   s = make([]string, 3)
-  l := []string{} // Same as make([]string, 0)
 
 We can set and get just like with arrays.
 
@@ -188,7 +192,7 @@ For good tips check out [[https://github.com/golang/go/wiki/SliceTricks]]
 
 * Structs
 
-Go is not Object oriented however you can arrange data into things you might call
+Go is not object oriented however you can arrange data into things you might call
 "Objects". (Please don't tell people I said you could)
 
 You can create a struct using a type declaration
@@ -252,6 +256,8 @@ Methods are just functions that are called on structs.
 
 * JSON
 
+// TODO describe and show JSON
+
 Json is super simple in Go. You can add tags to your structs to tell go how to
 unmarshal json into your structs.
 
@@ -278,6 +284,8 @@ data is not making it into your struct, make sure the attributes are public.
 - Output the total.
 
 * JSON REST Task 5 Pt. 1
+
+// TODO get on the web
 
 Let's get on the Web! The web directory has a skeleton of a CRUD API setup. Let's
 see if we can implement the actions!
