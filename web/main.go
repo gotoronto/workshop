@@ -77,9 +77,18 @@ func create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// validate your data
+	if todo.Task == "" {
+		render.JSON(w, r, "Task cannot be blank")
+	}
+
 	// create a new id for the todo
+	todo.ID = len(todos)
+
 	// add it to the list
+	todos = append(todos, todo)
+
 	// render back the created Todo
+	render.JSON(w, r, todo) // Render the list of tasks
 }
 
 func show(w http.ResponseWriter, r *http.Request) {
@@ -100,13 +109,60 @@ func show(w http.ResponseWriter, r *http.Request) {
 }
 
 func update(w http.ResponseWriter, r *http.Request) {
+	idStr := chi.URLParam(r, "todoID") // get the todoID from the URL
+	id, err := strconv.Atoi(idStr)     // Convert it into an int from a string
+	if err != nil {                    // If we can't convert it then notify the user of an error
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
+
+	todo := findTodo(id)
+	if todo == nil { // If we cannot find this task then notify the user it doesnt exist
+		http.Error(w, http.StatusText(404), 404)
+		return
+	}
+
+	var updates *Todo                                     // Declare a new Todo
+	if err := render.Bind(r.Body, &updates); err != nil { // Get the data from the POST body
+		render.JSON(w, r, err.Error()) // Notify user of error if the JSON is invalid
+		return
+	}
+
 	// validate your data
-	// update your task and render it back
+	if updates.Task != "" {
+		todo.Task = updates.Task
+	}
+
+	// update your task
+	todo.Done = updates.Done
+
 	// render back the created Todo
+	render.JSON(w, r, todo) // Render the task
 }
 
 func deleteTodo(w http.ResponseWriter, r *http.Request) {
+	idStr := chi.URLParam(r, "todoID") // get the todoID from the URL
+	id, err := strconv.Atoi(idStr)     // Convert it into an int from a string
+	if err != nil {                    // If we can't convert it then notify the user of an error
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
+
+	todo := findTodo(id)
+	if todo == nil { // If we cannot find this task then notify the user it doesnt exist
+		http.Error(w, http.StatusText(404), 404)
+		return
+	}
+
 	// find the index of the task in todos
-	// remove the task from todos
+	for i, todo := range todos {
+		// remove the task from todos
+		if todo.ID == id {
+			todos = append(todos[:i], todos[i+1:]...)
+			break
+		}
+	}
+
 	// render back out the task
+	render.JSON(w, r, todo)
 }
