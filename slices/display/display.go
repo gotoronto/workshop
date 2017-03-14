@@ -9,8 +9,6 @@ import (
 var Colors = []color.Attribute{
 	color.BgBlack, color.BgRed, color.BgGreen, color.BgYellow,
 	color.BgBlue, color.BgMagenta, color.BgCyan, color.BgWhite,
-	color.BgHiBlack, color.BgHiRed, color.BgHiGreen, color.BgHiYellow,
-	color.BgHiBlue, color.BgHiMagenta, color.BgHiCyan, color.BgHiWhite,
 }
 
 func Show(pic [][]int) {

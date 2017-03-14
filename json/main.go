@@ -1,10 +1,21 @@
 package main
 
 import (
-	"io/ioutil"
+	"encoding/json"
+	"fmt"
 )
 
+var jsonData = []byte(`[
+	{
+		"name": "Tim",
+		"age": 75
+	},
+	{
+		"name": "Jessica",
+		"age": 42
+	}
+]`)
+
 func main() {
-	jsonData, err := ioutil.ReadFile("./people.json")
 	// unmarshal here
 }

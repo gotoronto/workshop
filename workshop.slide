@@ -30,14 +30,29 @@ and go will infer its type. These are the same:
   myVar := "Hello"
   var myVar string = "Hello"
 
-We can define all types of variables this way.
+Go has various value types including strings, integers, floats, booleans, etc. We
+can define all types of variables this way.
 
   myString := "Hello"
   myInteger := 123
   myFloat := 123.456
   mySlice := []int{1, 2, 3}
 
-// TODO data types?
+* Pointers
+
+Go supports pointers, allowing you to pass references to values and records within
+your program.
+
+- A pointer is the memory address of a value and is notated by a *
+- Get the memory address of a value by using the & symbol
+
+  var i *int // declare a int pointer value
+  var j int = 2 // declare a value
+  var k *int = &j // Set k to equal the address
+
+Think about pointers as phone numbers. Each with a pointer you can dial a value.
+The phone company can change that phone number to a different value. The values
+didn't move only the phone numbers.
 
 * Functions
 
@@ -58,12 +73,11 @@ There are a couple different forms of functions
   }
 
 They can simply be called like this
-// TODO Put output
 
-  myFunc1()
-  myFunc2(2, "my string")
-  isYes := myFunc3("no")
-  isYes, err := myFunc3("no")
+  myFunc1()                   // No output
+  myFunc2(2, "my string")     // No output
+  isYes := myFunc3("no")      // isYes equals false
+  isYes, err := myFunc3("no") // isYes equals false and err is an error
 
 * Special Function
 
@@ -254,9 +268,30 @@ Methods are just functions that are called on structs.
   func PublicMethod() {}
   func privateMethod() {}
 
-* JSON
+* JSON what?
 
-// TODO describe and show JSON
+What Is JSON?
+
+JSON is short for JavaScript Object Notation, and is a way to store information
+in an organized, easy-to-access manner. In a nutshell, it gives us a human-readable
+collection of data that we can access in a really logical manner.
+
+JSON looks like this:
+
+  {
+    "jason" : {
+      "name" : "Jason Lengstorf",
+      "age" : "24",
+      "gender" : "male"
+    },
+    "kyle" : {
+      "name" : "Kyle Lengstorf",
+      "age" : "21",
+      "gender" : "male"
+    }
+  }
+
+* JSON
 
 Json is super simple in Go. You can add tags to your structs to tell go how to
 unmarshal json into your structs.
@@ -283,9 +318,22 @@ data is not making it into your struct, make sure the attributes are public.
 - Add up the ages of the people.
 - Output the total.
 
-* JSON REST Task 5 Pt. 1
+* Let's Get on the Web
 
-// TODO get on the web
+- We have learned some basics.
+- We can use JSON to start an API
+- We can use [[github.com/pressly/chi]] to simplify our needs
+- Lets create a Todo web app.
+
+**Task*5*
+
+- Look in the web directory
+- A static JS app is served from the public directory and makes requests to your server.
+- Run the server by running `go run main.go`
+- Restart it whenever you make a change.
+- The list and show actions are already implemented for you. Reference them for ideas on how to use chi.
+
+* JSON REST Task 5 Pt. 1
 
 Let's get on the Web! The web directory has a skeleton of a CRUD API setup. Let's
 see if we can implement the actions!

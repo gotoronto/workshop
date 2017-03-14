@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -16,12 +15,6 @@ type Todo struct {
 	ID   int    `json:"id"`
 	Task string `json:"title"`
 	Done bool   `json:"completed"`
-}
-
-// Struct for unmarshalling task json data
-type jsonData struct {
-	*Todo              // This means that the struct contains a Todo
-	OmitID interface{} `json:"id,omitempty"` // prevents 'id' from being set
 }
 
 var todos = []*Todo{
@@ -54,7 +47,6 @@ func main() {
 	todoRouter.Get("/", list)
 	todoRouter.Post("/", create)
 	todoRouter.Route("/:todoID", func(r chi.Router) {
-		r.Use(todoCtx)
 		r.Get("/", show)
 		r.Post("/", update)
 		r.Post("/delete", deleteTodo)
@@ -75,13 +67,13 @@ func main() {
 }
 
 func list(w http.ResponseWriter, r *http.Request) {
-	render.JSON(w, r, todos)
+	render.JSON(w, r, todos) // Render the list of tasks
 }
 
 func create(w http.ResponseWriter, r *http.Request) {
-	var data jsonData
-	if err := render.Bind(r.Body, &data); err != nil {
-		render.JSON(w, r, err.Error())
+	var todo *Todo                                     // Declare a new Todo
+	if err := render.Bind(r.Body, &todo); err != nil { // Get the data from the POST body
+		render.JSON(w, r, err.Error()) // Notify user of error if the JSON is invalid
 		return
 	}
 	// validate your data
@@ -90,32 +82,21 @@ func create(w http.ResponseWriter, r *http.Request) {
 	// render back the created Todo
 }
 
-// todo middleware
-// When the in a todo path, this will parse the todo id and render any errors.
-// This keeps your code DRY
-func todoCtx(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		idStr := chi.URLParam(r, "todoID")
-		id, err := strconv.Atoi(idStr)
-		if err != nil {
-			http.Error(w, http.StatusText(500), 500)
-			return
-		}
-
-		todo := findTodo(id)
-		if todo == nil {
-			http.Error(w, http.StatusText(404), 404)
-			return
-		}
-
-		ctx := context.WithValue(r.Context(), "todo", todo)
-		next.ServeHTTP(w, r.WithContext(ctx))
-	})
-}
-
 func show(w http.ResponseWriter, r *http.Request) {
-	todo := r.Context().Value("todo").(*Todo)
-	render.JSON(w, r, todo)
+	idStr := chi.URLParam(r, "todoID") // get the todoID from the URL
+	id, err := strconv.Atoi(idStr)     // Convert it into an int from a string
+	if err != nil {                    // If we can't convert it then notify the user of an error
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
+
+	todo := findTodo(id)
+	if todo == nil { // If we cannot find this task then notify the user it doesnt exist
+		http.Error(w, http.StatusText(404), 404)
+		return
+	}
+
+	render.JSON(w, r, todo) // Render the task
 }
 
 func update(w http.ResponseWriter, r *http.Request) {
