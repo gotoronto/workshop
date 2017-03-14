@@ -16,6 +16,19 @@ var jsonData = []byte(`[
 	}
 ]`)
 
+type Person struct {
+	Name string `json:"name"`
+	Age  int    `json:"age"`
+}
+
 func main() {
-	// unmarshal here
+	people := []Person{}
+	json.Unmarshal(jsonData, &people)
+
+	sumAge := 0
+	for _, person := range people {
+		sumAge += person.Age
+	}
+
+	fmt.Println(sumAge)
 }
