@@ -23,12 +23,13 @@ Declaration and Initialization
 
   var myVar string // Defining a variable
   myVar = "Hello" // initializing a variable
+  myVar = "Goodbye" // reassigning the variable
 
 Within a go function you can use a shortcut to define and initialize a variable
-and go will infer its type. These are the same:
+and go will infer its type.
 
-  myVar := "Hello"
-  var myVar string = "Hello"
+  myVar := "Hello" // Defining + initializing a variable
+  myVar = "Goodbye" // reassigning the variable
 
 Go has various value types including strings, integers, floats, booleans, etc. We
 can define all types of variables this way.
@@ -50,9 +51,7 @@ your program.
   var j int = 2 // declare a value
   var k *int = &j // Set k to equal the address
 
-Think about pointers as phone numbers. Each with a pointer you can dial a value.
-The phone company can change that phone number to a different value. The values
-didn't move only the phone numbers.
+Think about pointers as houses. The houses' addresses are fixed. However, different people can own the house.
 
 * Functions
 
@@ -160,7 +159,7 @@ divisible by 3 (3, 6, 9)
 
 * Slices (Arrays)
 
-Unlike arrays, slices are typed only by the elements they contain (not the number of elements). To create an empty slice with non-zero length, use the builtin make. Here we make a slice of strings of length 3 (initially zero-valued).
+Unlike arrays, slices are typed only by the elements they contain (not the number of elements). To create an empty slice with non-zero length, use the builtin make. Here we make a slice of strings of length 3 (initially empty).
 
   var s []string
   s = make([]string, 3)
@@ -182,7 +181,7 @@ We can add to a slice by using Go's built in function `append`
   len(s) // return 4
 
 *Gotchya* Watch out! This append allocates a new slice because it appended beyond
-it's original size.
+its original size.
 
 You can access Ranges of slices with the `:`
 
@@ -313,7 +312,7 @@ data is not making it into your struct, make sure the attributes are public.
 
 * Task 4
 
-- change into the json directory.
+- Change into the json directory in your console.
 - In main.go create a struct to unmarshal the data from `people.json`
 - Add up the ages of the people.
 - Output the total.
@@ -357,7 +356,7 @@ You have implemented create. Why don't we get update working!
 
 * Go Routines & Channels
 
-Were are the Go Routines? you may ask.
+Where are the Go Routines? you may ask.
 
 It is true that they are one of the most powerful features of Go but in basic
 web development you will rarely need them. To learn more about them visit  [[https://tour.golang.org/concurrency]]
