@@ -76,10 +76,10 @@ func create(w http.ResponseWriter, r *http.Request) {
 		render.JSON(w, r, err.Error()) // Notify user of error if the JSON is invalid
 		return
 	}
-	// validate your data
-	// create a new id for the todo
-	// add it to the list
-	// render back the created Todo
+	// Make sure todo.Task is not blank
+	// Set todo.ID to the length of todos
+	// Add it to the list of todos
+	// Render back the created Todo
 }
 
 func show(w http.ResponseWriter, r *http.Request) {
@@ -100,13 +100,23 @@ func show(w http.ResponseWriter, r *http.Request) {
 }
 
 func update(w http.ResponseWriter, r *http.Request) {
-	// validate your data
-	// update your task and render it back
-	// render back the created Todo
+	var updatedTodo *Todo                                     // Declare a new Todo
+	if err := render.Bind(r.Body, &updatedTodo); err != nil { // Get the data from the POST body
+		render.JSON(w, r, err.Error()) // Notify user of error if the JSON is invalid
+		return
+	}
+
+	// Get the todoID from URL param (check the show function)
+	// Find the todo with the id
+	// Update todo.Task if updatedTodo.Task is not blank
+	// Update todo.Done from updatedTodo.Done
+	// Render back the updated Todo
 }
 
 func deleteTodo(w http.ResponseWriter, r *http.Request) {
-	// find the index of the task in todos
-	// remove the task from todos
-	// render back out the task
+	// Get the todoID from URL param (check the show function)
+	// Find the todo with the id
+	// Find the index of the task in todos by the todo.ID
+	// Remove the task from todos (For deleting from a slice check: https://github.com/golang/go/wiki/SliceTricks)
+	// Render back out the task
 }

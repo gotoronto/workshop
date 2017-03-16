@@ -180,9 +180,6 @@ We can add to a slice by using Go's built in function `append`
   s = append(s, "d", "e")
   len(s) // return 4
 
-*Gotchya* Watch out! This append allocates a new slice because it appended beyond
-its original size.
-
 You can access Ranges of slices with the `:`
 
   s := []string{"a", "b", "c", "d", "e", "f"}
